@@ -4,7 +4,7 @@ export function Experience() {
   return (
     <div className="section-wrap" id="experience">
       <div className="sec-pre">
-        <span className="ln">04</span> Experience
+        <span className="ln">05</span> Experience
       </div>
       <h2 className="sec-h reveal">
         Career <span className="dim">timeline.</span>

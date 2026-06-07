@@ -4,7 +4,7 @@ export function Certifications() {
   return (
     <div className="section-wrap">
       <div className="sec-pre">
-        <span className="ln">05</span> Certifications
+        <span className="ln">06</span> Certifications
       </div>
       <h2 className="sec-h reveal">
         Verified <span className="dim">credentials.</span>

@@ -3,12 +3,15 @@ import { tools } from "@/lib/portfolioData";
 
 export function Tools() {
   return (
-    <div className="infra-section reveal">
-      <div className="infra-header">
-        <span className="term-prompt">▸</span>
-        <span className="infra-title">Tools &amp; Technology Stack</span>
+    <div className="section-wrap" id="tools">
+      <div className="sec-pre">
+        <span className="ln">03</span> Tools &amp; Technology Stack
       </div>
-      <div className="tools-grid">
+      <h2 className="sec-h reveal">
+        Technologies <span className="dim">that power innovation.</span>
+      </h2>
+      <p className="sec-sub reveal">Languages, frameworks, platforms, and tools that drive modern development.</p>
+      <div className="tools-grid reveal">
         {tools.map((tool) => (
           <div className="tool-item" key={tool.name}>
             <div className="tool-icon">

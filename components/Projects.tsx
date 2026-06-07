@@ -12,7 +12,7 @@ export function Projects() {
   return (
     <div className="section-wrap" id="projects">
       <div className="sec-pre">
-        <span className="ln">03</span> Projects
+        <span className="ln">04</span> Projects
       </div>
       <h2 className="sec-h reveal">
         Shipped <span className="dim">products &amp; systems.</span>

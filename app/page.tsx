@@ -10,6 +10,7 @@ import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
 import { Projects } from "@/components/Projects";
 import { Certifications } from "@/components/Certifications";
+import {Tools} from "@/components/Tools";
 import { SystemDesign } from "@/components/SystemDesign";
 
 export default function Home() {
@@ -58,6 +59,8 @@ export default function Home() {
         <About />
         <div className="divider" />
         <SystemDesign />
+        <div className="divider" />
+        <Tools />
         <div className="divider" />
         <Projects />
         <div className="divider" />
