@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Chivo, Chivo_Mono, Oxanium } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const oxanium = Oxanium({
@@ -40,7 +41,10 @@ export default function RootLayout({
       data-theme="dark"
       className={`${oxanium.variable} ${chivo.variable} ${chivoMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
