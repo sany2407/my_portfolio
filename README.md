@@ -28,10 +28,25 @@ It defaults to `http://localhost:8000` when unset. On Vercel, set it in
   `sessionStorage`, so replies are contextual within a visit and each visitor
   gets an isolated thread.
 
+### Offline fallback
+
+If the assistant API is unreachable (network error, timeout, or a non-2xx
+response), the widget falls back to **predefined answers** so it still
+demonstrates the portfolio. Predefined replies are always labelled:
+
+- a yellow `PREDEFINED` badge next to the assistant name,
+- a yellow dashed bubble border,
+- a yellow banner at the top of the thread: *"Live assistant unreachable.
+  Replies below are predefined answers, not retrieved answers."*
+
+They are canned responses matched to the question, not retrieved or cited
+evidence — the UI never presents them as live answers.
+
 ### Files
 
 - `components/ChatWidget.tsx` — floating button, slide-in panel, message thread.
 - `lib/chatApi.ts` — typed client for the backend, with a request timeout.
+- `lib/predefinedAnswers.ts` — offline fallback content and keyword matching.
 - `app/globals.css` — `.chat-*` styles, themed through the existing CSS variables.
 
 ## Getting Started

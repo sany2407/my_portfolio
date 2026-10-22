@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { Bot, CornerDownLeft, MessageSquare, RotateCcw, Send, X } from "lucide-react";
-import { sendChatMessage, type ChatSource } from "@/lib/chatApi";
+import { Bot, CornerDownLeft, MessageSquare, RotateCcw, Send, WifiOff, X } from "lucide-react";
+import { ChatApiError, sendChatMessage, type ChatSource } from "@/lib/chatApi";
+import { findPredefinedAnswer } from "@/lib/predefinedAnswers";
 
 type Message = {
   id: string;
@@ -10,6 +11,8 @@ type Message = {
   content: string;
   sources?: ChatSource[];
   grounded?: boolean;
+  /** True when the answer came from a local predefined answer, not the live API. */
+  isPredefined?: boolean;
 };
 
 const SUGGESTIONS = [
@@ -124,7 +127,7 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [offline, setOffline] = useState(false);
 
   const sessionIdRef = useRef<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -165,11 +168,11 @@ export function ChatWidget() {
     };
     setMessages((current) => [...current, userMessage]);
     setInput("");
-    setError(null);
     setPending(true);
 
     try {
       const result = await sendChatMessage(trimmed, sessionIdRef.current);
+      setOffline(false);
       setMessages((current) => [
         ...current,
         {
@@ -181,7 +184,24 @@ export function ChatWidget() {
         },
       ]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      // The live assistant is unreachable: fall back to clearly labelled
+      // predefined answers so the widget still demonstrates the portfolio.
+      const reason = err instanceof ChatApiError ? err.reason : "network";
+      const predefined = findPredefinedAnswer(trimmed);
+
+      setOffline(true);
+      setMessages((current) => [
+        ...current,
+        {
+          id: `a-${Date.now()}`,
+          role: "assistant",
+          content: predefined.answer,
+          sources: predefined.sources,
+          grounded: false,
+          isPredefined: true,
+        },
+      ]);
+      console.warn(`[assistant] live API unavailable (${reason}) - using predefined answers`);
     } finally {
       setPending(false);
     }
@@ -189,7 +209,7 @@ export function ChatWidget() {
 
   const reset = useCallback(() => {
     setMessages([]);
-    setError(null);
+    setOffline(false);
     window.sessionStorage.removeItem(SESSION_KEY);
     sessionIdRef.current = "";
   }, []);
@@ -252,6 +272,16 @@ export function ChatWidget() {
         </header>
 
         <div className="chat-body" ref={bodyRef} aria-live="polite">
+          {offline && (
+            <div className="chat-offline" role="status">
+              <WifiOff size={14} />
+              <span>
+                <strong>Live assistant unreachable.</strong> Replies below are predefined answers,
+                not retrieved answers.
+              </span>
+            </div>
+          )}
+
           {messages.length === 0 && (
             <div className="chat-intro">
               <p className="chat-intro-title">$ ask_about --sany</p>
@@ -280,10 +310,19 @@ export function ChatWidget() {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`chat-msg chat-msg-${message.role}`}
+              className={`chat-msg chat-msg-${message.role} ${
+                message.isPredefined ? "chat-msg-predefined" : ""
+              }`}
             >
               {message.role === "assistant" && (
-                <span className="chat-msg-label">SANY_AI</span>
+                <span className="chat-msg-label">
+                  SANY_AI
+                  {message.isPredefined && (
+                    <span className="chat-predefined-badge" title="Predefined answer, not a live retrieved answer">
+                      PREDEFINED
+                    </span>
+                  )}
+                </span>
               )}
               <div className="chat-bubble">
                 <RichText text={message.content} />
@@ -315,11 +354,6 @@ export function ChatWidget() {
             </div>
           )}
 
-          {error && (
-            <div className="chat-error" role="alert">
-              {error}
-            </div>
-          )}
         </div>
 
         <form

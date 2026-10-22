@@ -29,6 +29,18 @@ export const CHAT_API_URL = API_BASE;
 // the UI never hangs forever.
 const REQUEST_TIMEOUT_MS = 90_000;
 
+export type ChatFailureReason = "network" | "timeout" | "http";
+
+export class ChatApiError extends Error {
+  reason: ChatFailureReason;
+
+  constructor(message: string, reason: ChatFailureReason) {
+    super(message);
+    this.name = "ChatApiError";
+    this.reason = reason;
+  }
+}
+
 export async function sendChatMessage(
   question: string,
   sessionId: string
@@ -47,10 +59,14 @@ export async function sendChatMessage(
     });
   } catch (err) {
     if (err instanceof DOMException && err.name === "AbortError") {
-      throw new Error("The assistant took too long to respond. Please try again.");
+      throw new ChatApiError(
+        "The assistant took too long to respond. Please try again.",
+        "timeout"
+      );
     }
-    throw new Error(
-      `Could not reach the assistant API at ${API_BASE}. Is the backend running?`
+    throw new ChatApiError(
+      "Could not reach the assistant API. Is the backend running?",
+      "network"
     );
   } finally {
     clearTimeout(timer);
@@ -64,7 +80,10 @@ export async function sendChatMessage(
     } catch {
       detail = "";
     }
-    throw new Error(detail || `The assistant is unavailable (HTTP ${response.status}).`);
+    throw new ChatApiError(
+      detail || `The assistant is unavailable (HTTP ${response.status}).`,
+      "http"
+    );
   }
 
   return (await response.json()) as ChatResponse;
