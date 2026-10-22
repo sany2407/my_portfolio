@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { About } from "@/components/About";
+import { ChatWidget } from "@/components/ChatWidget";
 import { Contact } from "@/components/Contact";
 import { Experience } from "@/components/Experience";
 import { Footer } from "@/components/Footer";
@@ -72,6 +73,7 @@ export default function Home() {
         <Footer />
       </main>
       <Toaster position="top-right" richColors />
+      <ChatWidget />
     </>
   );
 }

@@ -1,5 +1,39 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Portfolio assistant (chat widget)
+
+The floating button in the bottom-right opens `SANY_AI`, a grounded Q&A assistant
+backed by the `portfolio-rag-backend` FastAPI service (LangGraph + ChromaDB +
+Gemini). Answers are retrieved from the portfolio knowledge base and cited.
+
+### Configuration
+
+The backend URL is inlined at build time:
+
+```bash
+# .env.local
+NEXT_PUBLIC_CHAT_API_URL=http://localhost:8000
+```
+
+It defaults to `http://localhost:8000` when unset. On Vercel, set it in
+**Project → Settings → Environment Variables** and redeploy.
+
+### Backend requirements
+
+- The backend must allow this app's origin. `CORS_ORIGINS_RAW` on the backend
+  lists exact origins; `CORS_ORIGIN_REGEX` can allow a pattern instead.
+- The backend exposes `POST /api/v1/chat` with `{ "question", "session_id" }` and
+  returns `{ answer, session_id, sources, grounded }`.
+- `session_id` keeps the conversation going: the widget stores one id in
+  `sessionStorage`, so replies are contextual within a visit and each visitor
+  gets an isolated thread.
+
+### Files
+
+- `components/ChatWidget.tsx` — floating button, slide-in panel, message thread.
+- `lib/chatApi.ts` — typed client for the backend, with a request timeout.
+- `app/globals.css` — `.chat-*` styles, themed through the existing CSS variables.
+
 ## Getting Started
 
 First, run the development server:
