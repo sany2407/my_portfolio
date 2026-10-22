@@ -147,9 +147,12 @@ The portfolio does not specify credential IDs, issue dates, expiry dates, or ver
     keywords: ["contact", "email", "reach", "hire", "available", "connect", "talk", "resume"],
     answer: `**Predefined answer — the live assistant is unavailable.**
 
-You can reach Sany at **sanyworks08@gmail.com** [1].
+You can reach Sany through his verified public professional profiles:
 
-He is currently open to work and comfortable with both remote and hybrid roles, so feel free to email with the role, team and location [1].`,
+* **LinkedIn:** linkedin.com/in/asany [1].
+* **GitHub:** github.com/sany2407 [1].
+
+Note: direct email addresses and phone numbers are intentionally omitted and not published in the available portfolio evidence [1].`,
     sources: [
       {
         title: "Contact",
