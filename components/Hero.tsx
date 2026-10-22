@@ -28,7 +28,7 @@ export function Hero() {
           <a href="#projects" className="btn-primary">
             View Projects
           </a>
-          <a href="/assets/Sany_A resume.pdf" className="btn-ghost" download>
+          <a href="/assets/Resume_Sany.pdf" className="btn-ghost" download>
             Download Resume
           </a>
         </div>

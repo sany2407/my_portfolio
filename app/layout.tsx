@@ -23,8 +23,8 @@ const chivoMono = Chivo_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sany A — Senior Full Stack & AI Systems Engineer",
-  description: "Senior full-stack and AI systems engineer portfolio.",
+  title: "Sany A — Senior Full Stack & AI Engineer",
+  description: "Senior full-stack and AI engineer portfolio.",
   icons: {
     icon: "/favicon.svg",
   },

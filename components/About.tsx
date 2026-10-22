@@ -30,7 +30,7 @@ export function About() {
             I'm strongest when I can take an idea from architecture sketch to running product — and keep it <strong>reliable, observable, and scalable</strong> along the way.
           </p>
           <a
-           href="/assets/Sany_A resume.pdf"
+           href="/assets/Resume_Sany.pdf"
             download
             title="Download Resume"
             target="_blank"
